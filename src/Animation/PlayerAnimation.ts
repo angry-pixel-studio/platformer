@@ -1,4 +1,4 @@
-import { Sprite, Animation, Vector2, AssetManager, Rectangle } from "mini-engine";
+import { Sprite, Animation, Vector2, AssetManager, Rectangle } from "angry-pixel";
 
 export const PlayerIdle = (): Animation => {
     return new Animation({

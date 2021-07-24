@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "ES2015",
     "lib": [ "es2020", "dom" ],
-    "declaration": true,
-    "outDir": "lib",
+    "declaration": false,
     "rootDir": "src",
     "strict": true,
     "strictNullChecks": false,
     "sourceMap": true,
-    "resolveJsonModule": true,
+    "moduleResolution": "node",
     "suppressExcessPropertyErrors": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules"]
 }

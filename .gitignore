@@ -1,5 +1,4 @@
 /node_modules
 .vscode
 .vs
-mini-engine-*.tgz
 /electron-build

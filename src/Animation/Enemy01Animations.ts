@@ -1,4 +1,4 @@
-import { Sprite, Animation, AssetManager, Rectangle } from "mini-engine";
+import { Sprite, Animation, AssetManager, Rectangle } from "angry-pixel";
 
 export const Enemy01Walking = (): Animation => {
     const config = {

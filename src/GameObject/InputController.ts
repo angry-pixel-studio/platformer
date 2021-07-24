@@ -1,4 +1,4 @@
-import { GameObject, GamepadController, GamepadData, InputManager, KeyboardController, Vector2 } from "mini-engine";
+import { GameObject, GamepadData, InputManager, KeyboardController, Vector2 } from "angry-pixel";
 import { Stage01 } from "../Scene/Stage01";
 
 export class InputController extends GameObject {
@@ -52,7 +52,7 @@ export class InputController extends GameObject {
                 : this.axis.x,
             this.gamepad.leftStickVertical > 0.1 || this.gamepad.leftStickVertical < -0.1
                 ? Math.sign(this.gamepad.leftStickVertical)
-                : this.axis.x
+                : this.axis.y
         );
 
         this._jump = this.gamepad.bottomFace || this._jump;

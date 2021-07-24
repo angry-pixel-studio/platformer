@@ -1,7 +1,7 @@
-import { AssetManager, GameObject, Sprite, SpriteRenderer, Vector2 } from "mini-engine";
+import { AssetManager, GameObject, Sprite, SpriteRenderer, Vector2 } from "angry-pixel";
 
 export class Parallax extends GameObject {
-    constructor() {
+    constructor(x: number, y: number, h: number = 1, v: number = 1) {
         super();
 
         this.layer = "Parallax";
@@ -13,11 +13,11 @@ export class Parallax extends GameObject {
                         image: AssetManager.getImage("image/scene/background.png"),
                         smooth: false,
                     }),
-                    tiled: new Vector2(2, 1),
+                    tiled: new Vector2(h, v),
                 })
         );
 
-        this.transform.scale.set(6, 6);
-        this.transform.position.set(0, 0);
+        this.transform.scale.set(8, 9.5);
+        this.transform.position.set(x, y);
     }
 }

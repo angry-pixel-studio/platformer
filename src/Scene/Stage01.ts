@@ -1,4 +1,4 @@
-import { AssetManager, GameCamera, Scene, TimeManager, Vector2, InputManager, GameObject } from "mini-engine";
+import { AssetManager, GameCamera, Scene, TimeManager, Vector2, InputManager, GameObject } from "angry-pixel";
 import { Foreground } from "../GameObject/Foreground";
 import { Player } from "../GameObject/Player";
 import { InputController } from "../GameObject/InputController";
@@ -8,6 +8,9 @@ import FpsMetter from "../GameObject/UI/FpsMetter";
 import { WoodenPlate } from "../GameObject/Scene/WoodenPlate";
 import { Parallax } from "../GameObject/Scene/Parallax";
 import Pause from "../GameObject/UI/Pause";
+import { MovingPlatform } from "../GameObject/Scene/MovingPlatform";
+import { OtherLayer } from "../GameObject/OtherLayer";
+import SpotPointer from "../GameObject/SpotPointer";
 
 export class Stage01 extends Scene {
     private fxCamera: GameCamera;
@@ -30,34 +33,49 @@ export class Stage01 extends Scene {
 
     protected start(): void {
         this.addGameObject(() => new InputController(), "InputController");
+        this.addGameObject(() => new SpotPointer(), "SpotPointer");
         this.addGameObject(() => new Foreground(AssetManager.getImage("image/tileset/tileset.png")), "Foreground");
-        this.addGameObject(() => new WoodenPlate(), "WoodenPlate");
-        this.addGameObject(() => new Player(), "Player");
-        this.addGameObject(() => new Parallax(), "Parallax");
 
-        this.addGameObject(() => new Enemy01(new Vector2(-180, -48), 2), "Enemy00");
-        this.addGameObject(() => new Enemy01(new Vector2(300, -48), 2.4), "Enemy01");
-        this.addGameObject(() => new Enemy01(new Vector2(400, -48), 1.6), "Enemy02");
-        this.addGameObject(() => new Enemy01(new Vector2(-400, -48), 3), "Enemy03");
-        this.addGameObject(() => new Enemy01(new Vector2(-500, -48), 2), "Enemy04");
-        this.addGameObject(() => new Enemy01(new Vector2(-600, -48), 2.4), "Enemy05");
-        this.addGameObject(() => new Enemy01(new Vector2(600, -48), 1.6), "Enemy06");
-        this.addGameObject(() => new Enemy01(new Vector2(800, -48), 3), "Enemy07");
-        this.addGameObject(() => new Enemy01(new Vector2(364, -48), 2.6), "Enemy08");
-        this.addGameObject(() => new Enemy01(new Vector2(100, -48), 2.2), "Enemy09");
+        this.addGameObject(() => new WoodenPlate(1512, -648), "WoodenPlate");
+
+        this.addGameObject(
+            () => new MovingPlatform([new Vector2(1992, -688), new Vector2(1992, -824)]),
+            "MovingPlatform01"
+        );
+        this.addGameObject(
+            () => new MovingPlatform([new Vector2(2184, -688), new Vector2(2760, -688)]),
+            "MovingPlatform02"
+        );
+
+        this.addGameObject(() => new Parallax(1512, -500, 5, 1), "Parallax");
+
+        this.addGameObject(() => new Player(2184, -600), "Player");
+
+        this.addGameObject(() => new Enemy01(new Vector2(480, -600), 2), "Enemy00");
+        this.addGameObject(() => new Enemy01(new Vector2(460, -600), 2.4), "Enemy01");
+        this.addGameObject(() => new Enemy01(new Vector2(440, -600), 1.6), "Enemy02");
+        this.addGameObject(() => new Enemy01(new Vector2(2400, -600), 3), "Enemy03");
+        this.addGameObject(() => new Enemy01(new Vector2(1400, -600), 2), "Enemy04");
+        this.addGameObject(() => new Enemy01(new Vector2(1200, -600), 2.4), "Enemy05");
+        this.addGameObject(() => new Enemy01(new Vector2(960, -600), 1.6), "Enemy06");
+        this.addGameObject(() => new Enemy01(new Vector2(2000, -600), 3), "Enemy07");
+        this.addGameObject(() => new Enemy01(new Vector2(2200, -600), 2.6), "Enemy08");
+        this.addGameObject(() => new Enemy01(new Vector2(2400, -600), 2.2), "Enemy09");
 
         this.pauseText = this.addGameObject(() => new Pause(), "Pause");
         this.pauseText.setActive(false);
 
         this.addGameObject(() => new FpsMetter(), "FpsMetter");
 
-        this.gameCamera.layers = ["Foreground", "Enemy", "Player", "UI"];
-        this.gameCamera.zoom = 1;
+        const cameraScaler: number = 1;
+
+        this.gameCamera.layers = ["Foreground", "Platform", "Enemy", "Player", "QuadTree", "UI"];
+        this.gameCamera.zoom = 1 * cameraScaler;
         this.gameCamera.addComponent(() => new FollowPlayerCamera());
 
         this.fxCamera = this.gameCamera.addChild(() => new GameCamera(), "FxCamera");
         this.fxCamera.layers = ["Parallax"];
-        this.fxCamera.zoom = 0.6;
+        this.fxCamera.zoom = 0.6 * cameraScaler;
         this.fxCamera.depth = -1;
     }
 

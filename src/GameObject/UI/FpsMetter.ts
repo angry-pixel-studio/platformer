@@ -1,4 +1,4 @@
-import { DomManager, TimeManager, GameObject, TextRenderer } from "mini-engine";
+import { DomManager, TimeManager, GameObject, TextRenderer } from "angry-pixel";
 
 const FPS_REFRESH_DELAY = 0.1;
 
@@ -6,6 +6,8 @@ export default class FpsMetter extends GameObject {
     private textRenderer: TextRenderer;
 
     private delay: number = FPS_REFRESH_DELAY;
+    private accumulator: number = 0;
+    private counter: number = 0;
 
     constructor() {
         super();
@@ -32,11 +34,14 @@ export default class FpsMetter extends GameObject {
 
     update() {
         this.delay += TimeManager.unscaledDeltaTime;
-        if (this.delay >= FPS_REFRESH_DELAY) {
-            this.delay = 0;
+        this.counter++;
 
-            const fps: string = (1 / TimeManager.unscaledDeltaTime).toFixed(2);
+        if (this.delay >= FPS_REFRESH_DELAY) {
+            const fps: string = (1 / (this.delay / this.counter)).toFixed(2);
             this.textRenderer.text = `FPS: ${fps}`;
+
+            this.delay = 0;
+            this.counter = 0;
         }
     }
 }

@@ -9,7 +9,7 @@ import {
     Sprite,
     SpriteRenderer,
     Vector2,
-} from "mini-engine";
+} from "angry-pixel";
 import { Enemy01Walking } from "../../Animation/Enemy01Animations";
 
 export class Enemy01 extends GameObject {
@@ -25,6 +25,11 @@ export class Enemy01 extends GameObject {
 
     private jumping: boolean = false;
     private cacheVelocity = new Vector2();
+
+    private bodyCollision: boolean = false;
+    private edgeCollision: boolean = false;
+    private wallCollision: boolean = false;
+    private wallPlayerCollision: boolean = false;
 
     constructor(position: Vector2, walkSpeed: number = 1.6) {
         super();
@@ -77,7 +82,6 @@ export class Enemy01 extends GameObject {
 
     protected start(): void {
         this.transform.scale.set(3, 3);
-        //this.transform.rotation = 45;
         this.animator.playAnimation("Walking");
     }
 
@@ -86,28 +90,27 @@ export class Enemy01 extends GameObject {
     }
 
     private move(): void {
-        if (this.bodyCollider.collidesWithLayer("Foreground") === false) {
-            return;
-        }
+        this.bodyCollision = this.bodyCollider.collidesWithLayer("Foreground");
+        this.edgeCollision = this.edgeCollider.collidesWithLayer("Foreground");
+        this.wallCollision = this.wallCollider.collidesWithLayer("Foreground");
+        this.wallPlayerCollision = this.wallCollider.collidesWithLayer("Player");
 
-        let yVelocity: number = 0;
+        let yVelocity: number = this.bodyCollision ? 0 : this.rigidBody.velocity.y;
 
-        if (
-            this.edgeCollider.collidesWithLayer("Foreground") === false ||
-            this.wallCollider.collidesWithLayer("Foreground") === true
-        ) {
+        if ((!this.edgeCollision || this.wallCollision) && this.bodyCollision) {
             this.transform.scale.set(-this.transform.scale.x, this.transform.scale.y);
         }
 
-        if (this.wallCollider.collidesWithLayer("Player") && this.jumping === false) {
+        if (this.wallPlayerCollision && this.jumping === false) {
             this.jumping = true;
             yVelocity = this.jumpSpeed;
         }
 
-        if (this.wallCollider.collidesWithLayer("Player") === false) {
+        if (this.wallPlayerCollision === false) {
             this.jumping = false;
         }
 
-        this.rigidBody.velocity.set(Math.sign(this.transform.scale.x) * this.walkSpeed, yVelocity);
+        this.cacheVelocity.set(Math.sign(this.transform.scale.x) * this.walkSpeed, yVelocity);
+        this.rigidBody.velocity = this.cacheVelocity;
     }
 }

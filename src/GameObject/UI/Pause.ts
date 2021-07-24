@@ -1,4 +1,4 @@
-import { DomManager, TimeManager, GameObject, TextRenderer } from "mini-engine";
+import { DomManager, TimeManager, GameObject, TextRenderer } from "angry-pixel";
 
 export default class Pause extends GameObject {
     private textRenderer: TextRenderer;

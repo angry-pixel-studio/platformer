@@ -1,9 +1,18 @@
-import { GameObject, RigidBody, RigidBodyType, TiledTilemapRenderer, TilemapCollider, Tileset } from "mini-engine";
-import TilemapData from "../Tilemap/Tilemap01.json";
+import {
+    AssetManager,
+    GameObject,
+    RigidBody,
+    RigidBodyType,
+    TiledTilemapRenderer,
+    TilemapCollider,
+    Tileset,
+    Vector2,
+} from "angry-pixel";
+import TilemapData from "../Tilemap/Tilemap02.json";
+import { OtherLayer } from "./OtherLayer";
 
 export class Foreground extends GameObject {
     private tilemapRenderer: TiledTilemapRenderer;
-    private collider: TilemapCollider;
 
     constructor(sprite: HTMLImageElement) {
         super();
@@ -21,10 +30,11 @@ export class Foreground extends GameObject {
                         gridHeight: 16,
                     }),
                     tilemapData: TilemapData,
+                    layerName: "Layer1",
                 })
         );
 
-        this.collider = this.addComponent<TilemapCollider>(
+        this.addComponent<TilemapCollider>(
             () =>
                 new TilemapCollider({
                     tilemapRenderer: this.tilemapRenderer,
@@ -36,11 +46,18 @@ export class Foreground extends GameObject {
             () =>
                 new RigidBody({
                     rigidBodyType: RigidBodyType.Static,
-                    layersToCollide: ["Foreground", "Bot"],
+                    layersToCollide: [],
                     gravity: 0,
                 })
         );
 
         this.transform.scale.set(3, 3);
+    }
+
+    protected start(): void {
+        this.addChild<OtherLayer>(
+            () => new OtherLayer(AssetManager.getImage("image/tileset/tileset.png")),
+            "OtherLayer"
+        ).transform.innerPosition = new Vector2(0, 0);
     }
 }
