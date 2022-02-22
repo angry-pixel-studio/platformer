@@ -2,3 +2,4 @@
 .vscode
 .vs
 /electron-build
+local.bat

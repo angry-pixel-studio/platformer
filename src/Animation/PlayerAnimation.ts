@@ -10,7 +10,7 @@ export const PlayerIdle = (): Animation => {
                     slice: new Rectangle(x, 64, 16, 16),
                 })
         ),
-        speed: 0.4,
+        framerate: 10,
         loop: true,
     });
 };
@@ -25,7 +25,7 @@ export const PlayerRun = (): Animation => {
                     slice: new Rectangle(x, 16, 16, 16),
                 })
         ),
-        speed: 0.4,
+        framerate: 10,
         loop: true,
     });
 };

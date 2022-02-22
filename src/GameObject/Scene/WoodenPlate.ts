@@ -7,8 +7,11 @@ import {
     Sprite,
     SpriteRenderer,
     TimeManager,
+    PolygonCollider,
     Vector2,
 } from "angry-pixel";
+
+const speed = 100;
 
 export class WoodenPlate extends GameObject {
     private direction: number = 1;
@@ -31,10 +34,27 @@ export class WoodenPlate extends GameObject {
         );
 
         this.addComponent(() => new BoxCollider({ width: 48, height: 8, physics: true, debug: true, offsetY: 4 }));
+        /*this.addComponent(
+            () =>
+                new PolygonCollider({
+                    vertexModel: [
+                        new Vector2(-256, -75),
+                        new Vector2(256, -75),
+                        new Vector2(192, 15),
+                        new Vector2(128, 75),
+                        new Vector2(64, 90),
+                        new Vector2(-64, 90),
+                        new Vector2(-128, 75),
+                        new Vector2(-192, 15),
+                    ],
+                    offsetY: 17,
+                    debug: true,
+                })
+        );*/
         this.addComponent(
             () =>
                 new RigidBody({
-                    rigidBodyType: RigidBodyType.Static,
+                    rigidBodyType: RigidBodyType.Dynamic,
                     layersToCollide: [],
                 })
         );
@@ -45,8 +65,8 @@ export class WoodenPlate extends GameObject {
     }
 
     protected update(): void {
-        this.direction =
-            this.transform.rotation.degrees >= 360 ? -1 : this.transform.rotation.degrees <= 0 ? 1 : this.direction;
-        this.transform.rotation.degrees += 100 * TimeManager.deltaTime * this.direction;
+        // this.direction = this.transform.rotation.degrees >= 360 ? -1 : this.transform.rotation.degrees <= 0 ? 1 : this.direction;
+        this.direction = -1;
+        this.transform.rotation.degrees += speed * TimeManager.deltaTime * this.direction;
     }
 }

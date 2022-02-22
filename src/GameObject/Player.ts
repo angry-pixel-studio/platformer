@@ -2,14 +2,12 @@ import {
     Animator,
     AssetManager,
     BoxCollider,
-    Collision,
     GameObject,
     Rectangle,
     RigidBody,
     RigidBodyType,
     Sprite,
     SpriteRenderer,
-    TimeManager,
     Vector2,
 } from "angry-pixel";
 import * as Animations from "../Animation/PlayerAnimation";
@@ -19,7 +17,6 @@ import { Stage01 } from "../Scene/Stage01";
 export class Player extends GameObject {
     private spriteRenderer: SpriteRenderer;
     private animator: Animator;
-    private rigidBody: RigidBody;
     private movements: Movements;
 
     public grounded: boolean = false;
@@ -53,7 +50,7 @@ export class Player extends GameObject {
         this.addComponent(() => new BoxCollider({ width: 8, height: 16, physics: true, debug: true }), "BodyCollider");
 
         this.addComponent(
-            () => new BoxCollider({ width: 6, height: 8, offsetY: -6, physics: false, debug: true }),
+            () => new BoxCollider({ width: 6, height: 8, offsetY: -7, physics: false, debug: true }),
             "FeetCollider"
         );
 
@@ -62,7 +59,7 @@ export class Player extends GameObject {
             "HeadCollider"
         );
 
-        this.rigidBody = this.addComponent(
+        this.addComponent(
             () =>
                 new RigidBody({
                     rigidBodyType: RigidBodyType.Dynamic,

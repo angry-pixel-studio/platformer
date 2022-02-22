@@ -1,11 +1,11 @@
-import { GameObject, TiledTilemapRenderer, Tileset } from "angry-pixel";
+import { GameObject, TiledTilemapRenderer, Tileset, Vector2 } from "angry-pixel";
 import TilemapData from "../Tilemap/Tilemap02.json";
 
 export class OtherLayer extends GameObject {
     constructor(sprite: HTMLImageElement) {
         super();
 
-        this.layer = "Foreground";
+        this.layer = "Overlayer";
 
         this.addComponent(
             () =>

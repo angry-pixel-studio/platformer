@@ -14,7 +14,7 @@ export const Enemy01Walking = (): Animation => {
                     slice: new Rectangle(x, 0, 16, 16),
                 })
         ),
-        speed: 0.4,
+        framerate: 10,
         loop: true,
     });
 };

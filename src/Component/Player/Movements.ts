@@ -1,4 +1,5 @@
-import { BoxCollider, Collision, Component, RigidBody, TYPE_RIGIDBODY, Vector2 } from "angry-pixel";
+import { BoxCollider, Component, ComponentTypes, RigidBody, Vector2 } from "angry-pixel";
+import { CollisionData } from "angry-pixel/lib/component/colliderComponent/AbstractColliderComponent";
 import { InputController } from "../../GameObject/InputController";
 
 export class Movements extends Component {
@@ -10,22 +11,22 @@ export class Movements extends Component {
     private inputController: InputController;
 
     // config
-    private gravity: number = 5;
-    private walkSpeed: number = 5;
-    private jumpSpeed: number = 14;
+    private gravity: number = 3000;
+    private walkSpeed: number = 300;
+    private jumpSpeed: number = 840;
 
     // state
     public grounded: boolean = false;
     private velocity: Vector2 = new Vector2(0, 0);
     private jumping: boolean = false;
-    private platformCollision: Collision = null;
+    private platformCollision: CollisionData = null;
     private onMovingPlatform: boolean = false;
 
     protected start(): void {
         this.bodyCollider = this.getComponentByName("BodyCollider");
         this.feetCollider = this.getComponentByName("FeetCollider");
         this.headCollider = this.getComponentByName("HeadCollider");
-        this.rigidBody = this.getComponentByType(TYPE_RIGIDBODY);
+        this.rigidBody = this.getComponentByType(ComponentTypes.RigidBody);
         this.inputController = this.findGameObjectByName("InputController");
 
         this.rigidBody.gravity = this.gravity;
@@ -35,7 +36,10 @@ export class Movements extends Component {
 
     protected update(): void {
         this.platformCollision = this.feetCollider.getCollisionWithLayer("Platform");
-        this.grounded = this.feetCollider.collidesWithLayer("Foreground") || this.platformCollision !== null;
+        this.grounded =
+            this.feetCollider.collidesWithLayer("Foreground") ||
+            this.feetCollider.collidesWithLayer("Enemy") ||
+            this.platformCollision !== null;
 
         this.checkForMovingPlatform();
         this.walk();
@@ -66,7 +70,7 @@ export class Movements extends Component {
     private checkForMovingPlatform(): void {
         if (this.platformCollision !== null) {
             if (this.onMovingPlatform === false) {
-                this.gameObject.parent = this.platformCollision.remoteCollider.gameObject;
+                this.gameObject.parent = this.platformCollision.gameObject;
             }
             this.onMovingPlatform = true;
         } else {

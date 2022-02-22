@@ -5,39 +5,30 @@ export class InputController extends GameObject {
     private keyboard: KeyboardController;
     private gamepad: GamepadData;
 
-    private _axis: Vector2 = new Vector2(0, 0);
-    private _jump: boolean = false;
+    public axis: Vector2 = new Vector2(0, 0);
+    public jump: boolean = false;
+    public pause: boolean = false;
 
     constructor() {
         super();
 
         this.keyboard = InputManager.keyboard;
-        this.gamepad = InputManager.gamepad.getGamepad(0);
-    }
-
-    public get axis(): Vector2 {
-        return this._axis;
-    }
-
-    public get jump(): boolean {
-        return this._jump;
     }
 
     protected update(): void {
-        if (this.getCurrentScene<Stage01>().paused) {
-            return;
-        }
+        this.gamepad = InputManager.gamepad.getGamepad(0);
 
         this.updateKeyboard();
         if (this.gamepad) this.updateGamepad();
     }
 
     private updateKeyboard(): void {
-        this._axis.x = this.keyboard.isPressed("ArrowRight") ? 1 : this.keyboard.isPressed("ArrowLeft") ? -1 : 0;
+        this.axis.x = this.keyboard.isPressed("ArrowRight") ? 1 : this.keyboard.isPressed("ArrowLeft") ? -1 : 0;
 
-        this._axis.y = this.keyboard.isPressed("ArrowUp") ? 1 : this.keyboard.isPressed("ArrowDown") ? -1 : 0;
+        this.axis.y = this.keyboard.isPressed("ArrowUp") ? 1 : this.keyboard.isPressed("ArrowDown") ? -1 : 0;
 
-        this._jump = this.keyboard.isPressed("Space");
+        this.jump = this.keyboard.isPressed("Space");
+        this.pause = this.keyboard.isPressed("KeyP");
     }
 
     private updateGamepad(): void {
@@ -55,6 +46,7 @@ export class InputController extends GameObject {
                 : this.axis.y
         );
 
-        this._jump = this.gamepad.bottomFace || this._jump;
+        this.jump = this.gamepad.bottomFace || this.jump;
+        this.pause = this.gamepad.start || this.pause;
     }
 }

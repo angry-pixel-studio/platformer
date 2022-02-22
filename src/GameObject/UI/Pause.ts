@@ -13,11 +13,12 @@ export default class Pause extends GameObject {
             () =>
                 new TextRenderer({
                     text: "PAUSE",
-                    color: "#FFFFFF",
-                    size: 20,
+                    color: "#A7D6ED",
+                    fontSize: 20,
                     fontFamily: "PressStart2P-Regular",
                     fontUrl: "font/PressStart2P-Regular.ttf",
-                    pivot: "center",
+                    orientation: "center",
+                    width: 100,
                 })
         );
     }

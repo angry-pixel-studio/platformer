@@ -1,41 +1,65 @@
-import { GameCamera, PhysicsComponent, TYPE_TILED_RENDERER, TYPE_TILEMAP_RENDERER } from "angry-pixel";
-import { TilemapRenderer } from "angry-pixel/lib/Engine/Components/Renderer/TilemapRenderer";
+import { clamp, ComponentTypes, GameCamera, PreRenderComponent, TiledTilemapRenderer, Vector2 } from "angry-pixel";
 import { Foreground } from "../../GameObject/Foreground";
 import { Player } from "../../GameObject/Player";
 
-export class FollowPlayerCamera extends PhysicsComponent {
+const maxOffset = 80;
+
+export class FollowPlayerCamera extends PreRenderComponent {
     private player: Player;
     private camera: GameCamera;
 
-    private minX: number;
-    private maxX: number;
-    private minY: number;
-    private maxY: number;
+    private boundaries = {
+        minX: 0,
+        maxX: 0,
+        minY: 0,
+        maxY: 0,
+    };
 
-    protected start(): void {
+    private playerOffset: Vector2 = new Vector2();
+    private cachePosition: Vector2 = new Vector2();
+
+    start(): void {
         this.player = this.findGameObjectByName<Player>("Player");
         this.camera = this.gameObject as GameCamera;
 
-        const foreground: Foreground = this.findGameObjectByName<Foreground>("Foreground");
+        const foreground = this.findGameObjectByName<Foreground>("Foreground");
+        const tilemapRenderer = foreground.getComponentByType<TiledTilemapRenderer>(
+            ComponentTypes.TiledTilemapRenderer
+        );
 
-        const tilemapRenderer: TilemapRenderer = foreground.getComponentByType<TilemapRenderer>(TYPE_TILED_RENDERER);
-        this.minX = foreground.transform.position.x; // - tilemapRenderer.realWidth / 2;
-        this.maxX = foreground.transform.position.x + tilemapRenderer.realWidth; // / 2;
-        this.maxY = foreground.transform.position.y; // - tilemapRenderer.realHeight / 2;
-        this.minY = foreground.transform.position.y - tilemapRenderer.realHeight; // / 2;
+        this.boundaries.minX = foreground.transform.position.x;
+        this.boundaries.maxX = foreground.transform.position.x + tilemapRenderer.realWidth;
+        this.boundaries.maxY = foreground.transform.position.y;
+        this.boundaries.minY = foreground.transform.position.y - tilemapRenderer.realHeight;
+
+        this.cachePosition.copy(this.player.transform.position);
+        this.gameObject.transform.position.copy(this.player.transform.position);
     }
 
-    protected update(): void {
-        //this.gameObject.transform.position.set(this.player.transform.position.x, this.player.transform.position.y);
-        //return;
+    update(): void {
+        this.followPlayer();
+        this.clampToBoundaries();
+    }
 
-        this.gameObject.transform.position.x = Math.min(
-            Math.max(this.player.transform.position.x, this.minX + this.camera.viewportRect.width / 2),
-            this.maxX - this.camera.viewportRect.width / 2
+    private followPlayer(): void {
+        Vector2.subtract(this.playerOffset, this.player.transform.position, this.gameObject.transform.position);
+
+        this.cachePosition.x = this.player.transform.position.x - clamp(this.playerOffset.x, -maxOffset, maxOffset);
+        this.cachePosition.y = this.player.transform.position.y - clamp(this.playerOffset.y, -maxOffset, maxOffset);
+
+        this.gameObject.transform.position = this.cachePosition;
+    }
+
+    private clampToBoundaries(): void {
+        this.gameObject.transform.position.x = clamp(
+            this.cachePosition.x,
+            this.boundaries.minX + this.camera.viewportRect.width / 2,
+            this.boundaries.maxX - this.camera.viewportRect.width / 2
         );
-        this.gameObject.transform.position.y = Math.min(
-            Math.max(this.player.transform.position.y, this.minY + this.camera.viewportRect.height / 2),
-            this.maxY - this.camera.viewportRect.height / 2
+        this.gameObject.transform.position.y = clamp(
+            this.cachePosition.y,
+            this.boundaries.minY + this.camera.viewportRect.height / 2,
+            this.boundaries.maxY - this.camera.viewportRect.height / 2
         );
     }
 }

@@ -18,10 +18,9 @@ export class Enemy01 extends GameObject {
     private bodyCollider: BoxCollider;
     private edgeCollider: BoxCollider;
     private wallCollider: BoxCollider;
-    private rigidBody: RigidBody;
 
-    private walkSpeed: number = 1.6;
-    private readonly jumpSpeed: number = 14;
+    private walkSpeed: number = 96;
+    private readonly jumpSpeed: number = 840;
 
     private jumping: boolean = false;
     private cacheVelocity = new Vector2();
@@ -31,7 +30,7 @@ export class Enemy01 extends GameObject {
     private wallCollision: boolean = false;
     private wallPlayerCollision: boolean = false;
 
-    constructor(position: Vector2, walkSpeed: number = 1.6) {
+    constructor(position: Vector2, walkSpeed: number = 96) {
         super();
 
         this.layer = "Enemy";
@@ -67,12 +66,12 @@ export class Enemy01 extends GameObject {
             "WallCollider"
         );
 
-        this.rigidBody = this.addComponent(
+        this.addComponent(
             () =>
                 new RigidBody({
                     rigidBodyType: RigidBodyType.Dynamic,
-                    layersToCollide: ["Foreground", "Player"],
-                    gravity: 5,
+                    layersToCollide: ["Foreground", "Player", "Platform"],
+                    gravity: 3000,
                 })
         );
 
