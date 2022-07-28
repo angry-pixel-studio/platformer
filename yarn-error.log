@@ -14,7 +14,8 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: ENOSPC: no space left on device, copyfile 'D:\nodejs\angry-pixel-engine\.git\objects\pack\pack-9659e6a8599c075608b9bc62553b492246f600b8.pack' -> 'C:\Users\mauro\AppData\Local\Yarn\Cache\v6\npm-angry-pixel-1.0.9-bfe6bd88-c269-428c-92e1-93f141f7e85e-1645315523902\node_modules\angry-pixel\.git\objects\pack\pack-9659e6a8599c075608b9bc62553b492246f600b8.pack'
+  Error: connect ETIMEDOUT 104.16.21.35:443
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1148:16)
 
 npm manifest: 
   {
@@ -459,7 +460,7 @@ Lockfile:
       uri-js "^4.2.2"
   
   "angry-pixel@file:../angry-pixel-engine":
-    version "1.0.9"
+    version "1.1.1"
     dependencies:
       gl-matrix "^3.3.0"
   

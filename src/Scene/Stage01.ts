@@ -1,4 +1,13 @@
-import { AssetManager, GameCamera, Scene, TimeManager, Vector2, InputManager, GameObject, random } from "angry-pixel";
+import {
+    AssetManager,
+    GameCamera,
+    Scene,
+    TimeManager,
+    Vector2,
+    InputManager,
+    GameObject,
+    randomInt,
+} from "angry-pixel";
 import { Foreground } from "../GameObject/Foreground";
 import { Player } from "../GameObject/Player";
 import { InputController } from "../GameObject/InputController";
@@ -9,9 +18,12 @@ import { WoodenPlate } from "../GameObject/Scene/WoodenPlate";
 import { Parallax } from "../GameObject/Scene/Parallax";
 import Pause from "../GameObject/UI/Pause";
 import { MovingPlatform } from "../GameObject/Scene/MovingPlatform";
-import { OtherLayer } from "../GameObject/OtherLayer";
 import SpotPointer from "../GameObject/SpotPointer";
 import Information from "../GameObject/UI/Information";
+
+const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop.toString()),
+});
 
 export class Stage01 extends Scene {
     private fxCamera: GameCamera;
@@ -22,58 +34,55 @@ export class Stage01 extends Scene {
     private pauseText: GameObject;
     public paused: boolean = false;
 
-    constructor() {
-        super();
-
+    init(): void {
         AssetManager.loadImage("image/tileset/tileset.png");
+        AssetManager.loadImage("image/tileset/brinstar-tiles.png");
         AssetManager.loadImage("image/player/player-spritesheet.png");
         AssetManager.loadImage("image/enemy/goblin_spritesheet.png");
         AssetManager.loadImage("image/misc/wooden_plate.png");
         AssetManager.loadImage("image/scene/background.png");
-    }
 
-    init(): void {
-        this.addGameObject(() => new InputController(), "InputController");
-        this.addGameObject(() => new SpotPointer(), "SpotPointer");
-        this.addGameObject(() => new Foreground(AssetManager.getImage("image/tileset/tileset.png")), "Foreground");
+        this.addGameObject(InputController);
+        this.addGameObject(SpotPointer);
+        this.addGameObject(Foreground);
 
-        this.addGameObject(() => new WoodenPlate(1400, -648), "WoodenPlate");
+        this.addGameObject(WoodenPlate);
 
-        this.addGameObject(
-            () => new MovingPlatform([new Vector2(1992, -688), new Vector2(1992, -824)]),
-            "MovingPlatform01"
-        );
-        this.addGameObject(
-            () => new MovingPlatform([new Vector2(2184, -688), new Vector2(2948, -688)]),
-            "MovingPlatform02"
-        );
+        this.addGameObject(MovingPlatform, {
+            spots: [new Vector2(1992, -688), new Vector2(1992, -824), new Vector2(2448, -824)],
+        });
 
-        this.addGameObject(() => new Parallax(1512, -500, 5, 1), "Parallax");
+        this.addGameObject(MovingPlatform, {
+            spots: [new Vector2(2184, -688), new Vector2(2948, -688)],
+        });
 
-        this.addGameObject(() => new Player(random(240, 2720), -600), "Player");
+        this.addGameObject(Parallax);
 
-        for (let i = 1; i <= 10; i++) {
-            this.addGameObject(
-                () => new Enemy01(new Vector2(random(240, 2720), -600), (random(160, 340) / 100) * 60),
-                `Enemy${i}`
-            );
+        this.addGameObject(Player).transform.position.set(randomInt(240, 2720), -600);
+
+        // @ts-ignore
+        for (let i = 1; i <= Number(params.enemies ?? 10); i++) {
+            this.addGameObject(Enemy01, {
+                position: new Vector2(randomInt(240, 2720), -400),
+                walkSpeed: (randomInt(160, 340) / 100) * 60,
+            });
         }
 
-        this.pauseText = this.addGameObject(() => new Pause(), "Pause");
-        this.pauseText.setActive(false);
+        this.pauseText = this.addGameObject(Pause);
+        this.pauseText.active = false;
 
-        this.addGameObject(() => new FpsMetter(), "FpsMetter");
-        this.addGameObject(() => new Information(), "Information");
+        this.addGameObject(FpsMetter);
+        this.addGameObject(Information);
     }
 
     start(): void {
         const cameraScaler: number = 1;
 
-        this.gameCamera.layers = ["Foreground", "Platform", "Enemy", "Player", "Overlayer", "QuadTree", "UI"];
+        this.gameCamera.layers = ["Foreground", "Hills", "Platform", "Enemy", "Player", "Overlayer", "QuadTree", "UI"];
         this.gameCamera.zoom = 1 * cameraScaler;
-        this.gameCamera.addComponent(() => new FollowPlayerCamera());
+        this.gameCamera.addComponent(FollowPlayerCamera);
 
-        this.fxCamera = this.gameCamera.addChild(() => new GameCamera(), "FxCamera");
+        this.fxCamera = this.gameCamera.addChild(GameCamera);
         this.fxCamera.layers = ["Parallax"];
         this.fxCamera.zoom = 0.6 * cameraScaler;
         this.fxCamera.depth = -1;
@@ -96,13 +105,13 @@ export class Stage01 extends Scene {
     }
 
     private pause(): void {
-        this.pauseKey = this.findGameObjectByName<InputController>("InputController").pause;
+        this.pauseKey = this.findGameObject<InputController>(InputController).pause;
 
         if (this.pauseKey && this.pausing === false) {
             this.pausing = true;
             TimeManager.setTimeScale(TimeManager.getTimeScale() === 0 ? 1 : 0);
             this.paused = TimeManager.getTimeScale() === 0;
-            this.pauseText.setActive(this.paused);
+            this.pauseText.active = this.paused;
         }
 
         this.pausing &&= this.pauseKey;

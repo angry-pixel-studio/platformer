@@ -1,10 +1,7 @@
 import { InputManager, GameObject, Vector2, GameCamera } from "angry-pixel";
 
 export default class SpotPointer extends GameObject {
-    // cache
     private camera: GameCamera = null;
-
-    // status
     private mousePressed: boolean = false;
     private position: Vector2 = new Vector2();
 

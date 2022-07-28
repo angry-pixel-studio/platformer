@@ -1,4 +1,4 @@
-import { clamp, ComponentTypes, GameCamera, PreRenderComponent, TiledTilemapRenderer, Vector2 } from "angry-pixel";
+import { clamp, GameCamera, PreRenderComponent, TiledTilemapRenderer, Vector2 } from "angry-pixel";
 import { Foreground } from "../../GameObject/Foreground";
 import { Player } from "../../GameObject/Player";
 
@@ -19,13 +19,11 @@ export class FollowPlayerCamera extends PreRenderComponent {
     private cachePosition: Vector2 = new Vector2();
 
     start(): void {
-        this.player = this.findGameObjectByName<Player>("Player");
+        this.player = this.findGameObject<Player>(Player);
         this.camera = this.gameObject as GameCamera;
 
-        const foreground = this.findGameObjectByName<Foreground>("Foreground");
-        const tilemapRenderer = foreground.getComponentByType<TiledTilemapRenderer>(
-            ComponentTypes.TiledTilemapRenderer
-        );
+        const foreground = this.findGameObject<Foreground>(Foreground);
+        const tilemapRenderer = foreground.getComponent<TiledTilemapRenderer>(TiledTilemapRenderer);
 
         this.boundaries.minX = foreground.transform.position.x;
         this.boundaries.maxX = foreground.transform.position.x + tilemapRenderer.realWidth;

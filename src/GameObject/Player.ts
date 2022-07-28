@@ -11,6 +11,7 @@ import {
     Vector2,
 } from "angry-pixel";
 import * as Animations from "../Animation/PlayerAnimation";
+import { AnimationController } from "../Component/Player/AnimationController";
 import { Movements } from "../Component/Player/Movements";
 import { Stage01 } from "../Scene/Stage01";
 
@@ -21,55 +22,44 @@ export class Player extends GameObject {
 
     public grounded: boolean = false;
 
-    constructor(x: number, y: number) {
-        super();
-
+    protected init(): void {
         this.layer = "Player";
 
-        this.spriteRenderer = this.addComponent<SpriteRenderer>(
-            () =>
-                new SpriteRenderer({
-                    sprite: new Sprite({
-                        image: AssetManager.getImage("image/player/player-spritesheet.png"),
-                        slice: new Rectangle(0, 64, 16, 16),
-                        smooth: false,
-                    }),
-                    offset: new Vector2(0, 0),
-                })
-        );
+        this.spriteRenderer = this.addComponent<SpriteRenderer>(SpriteRenderer, {
+            sprite: new Sprite({
+                image: AssetManager.getImage("image/player/player-spritesheet.png"),
+                slice: new Rectangle(0, 64, 16, 16),
+                smooth: false,
+            }),
+            offset: new Vector2(0, 0),
+        });
 
-        this.animator = this.addComponent<Animator>(
-            () =>
-                new Animator({
-                    spriteRenderer: this.spriteRenderer,
-                })
-        )
+        this.animator = this.addComponent<Animator>(Animator, {
+            spriteRenderer: this.spriteRenderer,
+        })
             .addAnimation("PlayerIdle", Animations.PlayerIdle())
             .addAnimation("PlayerRun", Animations.PlayerRun());
 
-        this.addComponent(() => new BoxCollider({ width: 8, height: 16, physics: true, debug: true }), "BodyCollider");
+        this.addComponent(BoxCollider, { width: 8, height: 16, physics: true, debug: true }, "BodyCollider");
 
         this.addComponent(
-            () => new BoxCollider({ width: 6, height: 8, offsetY: -7, physics: false, debug: true }),
+            BoxCollider,
+            { width: 6, height: 6, offsetY: -6, physics: false, debug: true },
             "FeetCollider"
         );
 
         this.addComponent(
-            () => new BoxCollider({ width: 6, height: 4, offsetY: 6, physics: false, debug: true }),
+            BoxCollider,
+            { width: 6, height: 4, offsetY: 6, physics: false, debug: true },
             "HeadCollider"
         );
 
-        this.addComponent(
-            () =>
-                new RigidBody({
-                    rigidBodyType: RigidBodyType.Dynamic,
-                    layersToCollide: ["Foreground", "Enemy", "Platform"],
-                })
-        );
+        this.addComponent(RigidBody, {
+            rigidBodyType: RigidBodyType.Dynamic,
+        });
 
-        this.movements = this.addComponent(() => new Movements(), "Movements");
-
-        this.transform.position.set(x, y);
+        this.movements = this.addComponent(Movements);
+        this.addComponent(AnimationController);
     }
 
     protected start(): void {
@@ -79,23 +69,8 @@ export class Player extends GameObject {
     }
 
     protected update(): void {
-        this.spriteRenderer.setActive(this.getCurrentScene<Stage01>().paused === false);
+        this.spriteRenderer.active = !this.getCurrentScene<Stage01>().paused;
 
         this.grounded = this.movements.grounded;
-
-        this.transform.scale.x =
-            this.rigidBody.velocity.x !== 0
-                ? Math.sign(this.rigidBody.velocity.x) * Math.abs(this.transform.scale.x)
-                : this.transform.scale.x;
-
-        this.updateAnimations();
-    }
-
-    private updateAnimations(): void {
-        if (this.rigidBody.velocity.x !== 0 && this.grounded) {
-            this.animator.playAnimation("PlayerRun");
-        } else {
-            this.animator.playAnimation("PlayerIdle");
-        }
     }
 }

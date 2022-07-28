@@ -11,8 +11,19 @@ const config: GameConfig = {
     gameHeight: 720,
     debugEnabled: false,
     canvasColor: "#000000",
+    // physicsFramerate: 60,
     collisions: {
         method: CollisionMethodConfig.SAT,
+        collisionMatrix: [
+            ["Player", "Foreground"],
+            ["Player", "Enemy"],
+            ["Player", "Platform"],
+            ["Player", "Hills"],
+            ["Enemy", "Foreground"],
+            ["Enemy", "Player"],
+            ["Enemy", "Platform"],
+            ["Enemy", "Hills"],
+        ],
     },
 };
 
@@ -27,8 +38,8 @@ const config: GameConfig = {
 const game = new Game(config);
 
 // Add a scene
-game.addScene("Intro", () => new Intro());
-game.addScene("Stage01", () => new Stage01());
+// game.addScene("Intro", () => new Intro());
+game.addScene(Stage01, "Stage01");
 
 // Run the game
 game.run();

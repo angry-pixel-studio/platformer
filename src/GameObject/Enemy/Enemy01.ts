@@ -3,6 +3,7 @@ import {
     AssetManager,
     BoxCollider,
     GameObject,
+    InitOptions,
     Rectangle,
     RigidBody,
     RigidBodyType,
@@ -11,6 +12,11 @@ import {
     Vector2,
 } from "angry-pixel";
 import { Enemy01Walking } from "../../Animation/Enemy01Animations";
+
+export interface EnemyOptions extends InitOptions {
+    position: Vector2;
+    walkSpeed: number;
+}
 
 export class Enemy01 extends GameObject {
     private spriteRenderer: SpriteRenderer;
@@ -30,50 +36,41 @@ export class Enemy01 extends GameObject {
     private wallCollision: boolean = false;
     private wallPlayerCollision: boolean = false;
 
-    constructor(position: Vector2, walkSpeed: number = 96) {
-        super();
-
+    protected init({ position, walkSpeed }: EnemyOptions): void {
         this.layer = "Enemy";
 
-        this.spriteRenderer = this.addComponent<SpriteRenderer>(
-            () =>
-                new SpriteRenderer({
-                    sprite: new Sprite({
-                        image: AssetManager.getImage("image/enemy/goblin_spritesheet.png"),
-                        slice: new Rectangle(0, 0, 16, 16),
-                        smooth: false,
-                    }),
-                })
-        );
+        this.spriteRenderer = this.addComponent<SpriteRenderer>(SpriteRenderer, {
+            sprite: new Sprite({
+                image: AssetManager.getImage("image/enemy/goblin_spritesheet.png"),
+                slice: new Rectangle(0, 0, 16, 16),
+                smooth: false,
+            }),
+        });
 
-        this.animator = this.addComponent<Animator>(
-            () =>
-                new Animator({
-                    spriteRenderer: this.spriteRenderer,
-                })
-        ).addAnimation("Walking", Enemy01Walking());
+        this.animator = this.addComponent<Animator>(Animator, {
+            spriteRenderer: this.spriteRenderer,
+        }).addAnimation("Walking", Enemy01Walking());
 
         this.bodyCollider = this.addComponent(
-            () => new BoxCollider({ width: 10, height: 16, physics: true, debug: true }),
+            BoxCollider,
+            { width: 10, height: 16, physics: true, debug: true },
             "BodyCollider"
         );
         this.edgeCollider = this.addComponent(
-            () => new BoxCollider({ width: 4, height: 4, offsetX: 8, offsetY: -6, physics: false, debug: true }),
+            BoxCollider,
+            { width: 4, height: 4, offsetX: 8, offsetY: -6, physics: false, debug: true },
             "EdgeCollider"
         );
         this.wallCollider = this.addComponent(
-            () => new BoxCollider({ width: 4, height: 4, offsetX: 8, offsetY: 5, physics: false, debug: true }),
+            BoxCollider,
+            { width: 4, height: 4, offsetX: 8, offsetY: 5, physics: false, debug: true },
             "WallCollider"
         );
 
-        this.addComponent(
-            () =>
-                new RigidBody({
-                    rigidBodyType: RigidBodyType.Dynamic,
-                    layersToCollide: ["Foreground", "Player", "Platform"],
-                    gravity: 3000,
-                })
-        );
+        this.addComponent(RigidBody, {
+            rigidBodyType: RigidBodyType.Dynamic,
+            gravity: 3000,
+        });
 
         this.transform.position = position;
         this.walkSpeed = walkSpeed;

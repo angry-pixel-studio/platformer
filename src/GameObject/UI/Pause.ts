@@ -1,26 +1,19 @@
-import { DomManager, TimeManager, GameObject, TextRenderer } from "angry-pixel";
+import { GameObject, TextRenderer } from "angry-pixel";
 
 export default class Pause extends GameObject {
-    private textRenderer: TextRenderer;
-
-    constructor() {
-        super();
-
+    protected init(): void {
         this.layer = "UI";
         this.ui = true;
 
-        this.textRenderer = this.addComponent(
-            () =>
-                new TextRenderer({
-                    text: "PAUSE",
-                    color: "#A7D6ED",
-                    fontSize: 20,
-                    fontFamily: "PressStart2P-Regular",
-                    fontUrl: "font/PressStart2P-Regular.ttf",
-                    orientation: "center",
-                    width: 100,
-                })
-        );
+        this.addComponent(TextRenderer, {
+            text: "PAUSE",
+            color: "#A7D6ED",
+            fontSize: 20,
+            fontFamily: "PressStart2P-Regular",
+            fontUrl: "font/PressStart2P-Regular.ttf",
+            orientation: "center",
+            width: 100,
+        });
     }
 
     start() {

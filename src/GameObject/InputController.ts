@@ -9,9 +9,7 @@ export class InputController extends GameObject {
     public jump: boolean = false;
     public pause: boolean = false;
 
-    constructor() {
-        super();
-
+    protected init(): void {
         this.keyboard = InputManager.keyboard;
     }
 

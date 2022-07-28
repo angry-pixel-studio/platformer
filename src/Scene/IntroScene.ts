@@ -4,7 +4,7 @@ export class Intro extends Scene {
     protected start(): void {
         this.gameCamera.layers = ["Text"];
 
-        this.addGameObject(() => new IntroText(), "IntroText");
+        this.addGameObject(IntroText);
     }
 }
 
@@ -22,19 +22,16 @@ class IntroText extends GameObject {
 
         this.layer = "Text";
 
-        this.textRenderer = this.addComponent(
-            () =>
-                new TextRenderer({
-                    width: 304,
-                    height: 32,
-                    color: "#FFFFFF",
-                    text: "",
-                    fontFamily: "PressStart2P-Regular",
-                    fontUrl: "font/PressStart2P-Regular.ttf",
-                    fontSize: 16,
-                    orientation: "rightDown",
-                })
-        );
+        this.textRenderer = this.addComponent(TextRenderer, {
+            width: 304,
+            height: 32,
+            color: "#FFFFFF",
+            text: "",
+            fontFamily: "PressStart2P-Regular",
+            fontUrl: "font/PressStart2P-Regular.ttf",
+            fontSize: 16,
+            orientation: "rightDown",
+        });
 
         this.transform.position.set(-152, 0);
     }
