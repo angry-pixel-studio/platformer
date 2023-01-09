@@ -30,19 +30,11 @@ export class InputController extends GameObject {
     }
 
     private updateGamepad(): void {
-        this.axis.set(
-            this.gamepad.dpadRight ? 1 : this.gamepad.dpadLeft ? -1 : this.axis.x,
-            this.gamepad.dpadUp ? 1 : this.gamepad.dpadDown ? -1 : this.axis.y
-        );
-
-        this.axis.set(
-            this.gamepad.leftStickHorizontal > 0.1 || this.gamepad.leftStickHorizontal < -0.1
-                ? Math.sign(this.gamepad.leftStickHorizontal)
-                : this.axis.x,
-            this.gamepad.leftStickVertical > 0.1 || this.gamepad.leftStickVertical < -0.1
-                ? Math.sign(this.gamepad.leftStickVertical)
-                : this.axis.y
-        );
+        if (this.gamepad.dpadAxes.magnitude > 0) {
+            this.axis.copy(this.gamepad.dpadAxes);
+        } else if (this.gamepad.leftStickAxes.magnitude >= 0.5) {
+            this.axis.set(Math.sign(this.gamepad.leftStickAxes.x), Math.sign(this.gamepad.leftStickAxes.y));
+        }
 
         this.jump = this.gamepad.bottomFace || this.jump;
         this.pause = this.gamepad.start || this.pause;

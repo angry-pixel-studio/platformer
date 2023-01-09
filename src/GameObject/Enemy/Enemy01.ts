@@ -2,6 +2,7 @@ import {
     Animator,
     AssetManager,
     BoxCollider,
+    CollisionData,
     GameObject,
     InitOptions,
     Rectangle,
@@ -23,18 +24,18 @@ export class Enemy01 extends GameObject {
     private animator: Animator;
     private bodyCollider: BoxCollider;
     private edgeCollider: BoxCollider;
-    private wallCollider: BoxCollider;
 
     private walkSpeed: number = 96;
     private readonly jumpSpeed: number = 840;
 
-    private jumping: boolean = false;
+    private jumping: boolean = true;
     private cacheVelocity = new Vector2();
 
+    private bodyCollisions: CollisionData[];
     private bodyCollision: boolean = false;
     private edgeCollision: boolean = false;
     private wallCollision: boolean = false;
-    private wallPlayerCollision: boolean = false;
+    private playerCollision: boolean = false;
 
     protected init({ position, walkSpeed }: EnemyOptions): void {
         this.layer = "Enemy";
@@ -49,22 +50,18 @@ export class Enemy01 extends GameObject {
 
         this.animator = this.addComponent<Animator>(Animator, {
             spriteRenderer: this.spriteRenderer,
-        }).addAnimation("Walking", Enemy01Walking());
+        }).addAnimation(Enemy01Walking(), "Walking");
 
         this.bodyCollider = this.addComponent(
             BoxCollider,
             { width: 10, height: 16, physics: true, debug: true },
             "BodyCollider"
         );
+
         this.edgeCollider = this.addComponent(
             BoxCollider,
-            { width: 4, height: 4, offsetX: 8, offsetY: -6, physics: false, debug: true },
+            { width: 4, height: 4, offsetX: 8, offsetY: -10, physics: false, debug: true },
             "EdgeCollider"
-        );
-        this.wallCollider = this.addComponent(
-            BoxCollider,
-            { width: 4, height: 4, offsetX: 8, offsetY: 5, physics: false, debug: true },
-            "WallCollider"
         );
 
         this.addComponent(RigidBody, {
@@ -86,23 +83,26 @@ export class Enemy01 extends GameObject {
     }
 
     private move(): void {
-        this.bodyCollision = this.bodyCollider.collidesWithLayer("Foreground");
+        this.bodyCollisions = this.bodyCollider.getCollisionsWithLayer("Foreground");
+        this.bodyCollision = this.bodyCollisions.length > 0;
+
         this.edgeCollision = this.edgeCollider.collidesWithLayer("Foreground");
-        this.wallCollision = this.wallCollider.collidesWithLayer("Foreground");
-        this.wallPlayerCollision = this.wallCollider.collidesWithLayer("Player");
+        this.playerCollision = this.edgeCollider.collidesWithLayer("Player");
+        this.wallCollision = this.bodyCollision && this.bodyCollisions.some((c) => c.resolution.direction.x !== 0);
 
         let yVelocity: number = this.bodyCollision ? 0 : this.rigidBody.velocity.y;
 
         if ((!this.edgeCollision || this.wallCollision) && this.bodyCollision) {
-            this.transform.scale.set(-this.transform.scale.x, this.transform.scale.y);
+            this.transform.scale.x *= -1;
         }
 
-        if (this.wallPlayerCollision && this.jumping === false) {
+        if (this.playerCollision && this.jumping === false) {
+            // console.log(this.edgeCollider.colliders[0], this.edgeCollider.getCollisionWithLayer("Player").collider);
             this.jumping = true;
             yVelocity = this.jumpSpeed;
         }
 
-        if (this.wallPlayerCollision === false) {
+        if (this.playerCollision === false) {
             this.jumping = false;
         }
 

@@ -1,4 +1,4 @@
-import { AssetManager, GameObject, Sprite, SpriteRenderer, Vector2 } from "angry-pixel";
+import { AssetManager, BoxCollider, GameObject, Sprite, SpriteRenderer, Vector2 } from "angry-pixel";
 
 export class Parallax extends GameObject {
     protected init(): void {
@@ -9,10 +9,10 @@ export class Parallax extends GameObject {
                 image: AssetManager.getImage("image/scene/background.png"),
                 smooth: false,
             }),
-            tiled: new Vector2(5, 1),
+            tiled: new Vector2(6, 1),
         });
 
-        this.transform.scale.set(8, 9.5);
-        this.transform.position.set(1512, 100);
+        this.transform.scale.set(4.8, 9.6);
+        this.transform.position.set(1512, -500);
     }
 }

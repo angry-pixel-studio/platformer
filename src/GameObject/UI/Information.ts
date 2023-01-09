@@ -1,4 +1,4 @@
-import { DomManager, GameObject, TextRenderer } from "angry-pixel";
+import { DomManager, GameObject, TextOrientation, TextRenderer, TextRendererOptions } from "angry-pixel";
 
 const text = "Use Arrows to move and Space to jump";
 const fontSize = 14;
@@ -13,10 +13,9 @@ export default class Information extends GameObject {
             text,
             color: "#A7D6ED",
             fontSize,
-            fontFamily: "PressStart2P-Regular",
-            fontUrl: "font/PressStart2P-Regular.ttf",
-            orientation: "rightDown",
-        });
+            font: "PressStart2P-Regular",
+            orientation: TextOrientation.RightDown,
+        } as TextRendererOptions);
     }
 
     start() {

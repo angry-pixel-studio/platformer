@@ -4,8 +4,9 @@ import {
     RigidBody,
     RigidBodyType,
     TiledTilemapRenderer,
+    TiledTilemapRendererOptions,
     TilemapCollider,
-    Tileset,
+    TilemapOrientation,
     Vector2,
 } from "angry-pixel";
 import TilemapData from "../Tilemap/Tilemap02.json";
@@ -17,30 +18,33 @@ export class Foreground extends GameObject {
     protected init(): void {
         this.layer = "Foreground";
 
+        this.transform.scale.set(3, 3);
+
         this.tilemapRenderer = this.addComponent(TiledTilemapRenderer, {
-            tileset: new Tileset({
+            tileset: {
                 image: AssetManager.getImage("image/tileset/tileset.png"),
                 tileWidth: 16,
                 tileHeight: 16,
-                gridWidth: 12,
-                gridHeight: 6,
-            }),
-            tilemapData: TilemapData,
-            layerName: "Layer1",
-        });
+                width: 12,
+            },
+            tiledData: TilemapData,
+            tilemapLayer: "Layer1",
+            tileWidth: 16,
+            tileHeight: 16,
+            orientation: TilemapOrientation.RightDown,
+            smooth: false,
+        } as TiledTilemapRendererOptions);
 
         this.addComponent<TilemapCollider>(TilemapCollider, {
             tilemapRenderer: this.tilemapRenderer,
             debug: true,
+            composite: true,
         });
 
         this.addComponent<RigidBody>(RigidBody, {
             rigidBodyType: RigidBodyType.Static,
-            layersToCollide: [],
             gravity: 0,
         });
-
-        this.transform.scale.set(3, 3);
 
         this.addChild<OtherLayer>(OtherLayer).transform.innerPosition = new Vector2(0, 0);
     }

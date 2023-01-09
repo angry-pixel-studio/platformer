@@ -1,6 +1,7 @@
-import { Game, Rectangle, CollisionMethodConfig, GameConfig } from "angry-pixel";
+import { Game, Rectangle, CollisionMethods, GameConfig, Vector2, BroadPhaseMethods } from "angry-pixel";
 import { Stage01 } from "./Scene/Stage01";
 import { Intro } from "./Scene/IntroScene";
+import { Loading } from "./Scene/Loading";
 
 const containerElement = document.getElementById("app");
 
@@ -13,7 +14,7 @@ const config: GameConfig = {
     canvasColor: "#000000",
     // physicsFramerate: 60,
     collisions: {
-        method: CollisionMethodConfig.SAT,
+        collisionMethod: CollisionMethods.SAT,
         collisionMatrix: [
             ["Player", "Foreground"],
             ["Player", "Enemy"],
@@ -39,6 +40,7 @@ const game = new Game(config);
 
 // Add a scene
 // game.addScene("Intro", () => new Intro());
+game.addScene(Loading, "Loading");
 game.addScene(Stage01, "Stage01");
 
 // Run the game

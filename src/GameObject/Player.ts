@@ -37,8 +37,8 @@ export class Player extends GameObject {
         this.animator = this.addComponent<Animator>(Animator, {
             spriteRenderer: this.spriteRenderer,
         })
-            .addAnimation("PlayerIdle", Animations.PlayerIdle())
-            .addAnimation("PlayerRun", Animations.PlayerRun());
+            .addAnimation(Animations.PlayerIdle(), "PlayerIdle")
+            .addAnimation(Animations.PlayerRun(), "PlayerRun");
 
         this.addComponent(BoxCollider, { width: 8, height: 16, physics: true, debug: true }, "BodyCollider");
 

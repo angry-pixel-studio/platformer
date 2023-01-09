@@ -1,4 +1,4 @@
-import { GameObject, TextRenderer } from "angry-pixel";
+import { GameObject, TextOrientation, TextRenderer, TextRendererOptions } from "angry-pixel";
 
 export default class Pause extends GameObject {
     protected init(): void {
@@ -9,11 +9,10 @@ export default class Pause extends GameObject {
             text: "PAUSE",
             color: "#A7D6ED",
             fontSize: 20,
-            fontFamily: "PressStart2P-Regular",
-            fontUrl: "font/PressStart2P-Regular.ttf",
-            orientation: "center",
+            font: "PressStart2P-Regular",
+            orientation: TextOrientation.Center,
             width: 100,
-        });
+        } as TextRendererOptions);
     }
 
     start() {

@@ -77,11 +77,9 @@ export class Movements extends Component {
         if (this.platformCollision && !this.onMovingPlatform) {
             this.gameObject.parent = this.platformCollision.gameObject;
             this.onMovingPlatform = true;
-            console.log("IN");
         } else if (!this.platformCollision && this.onMovingPlatform) {
             this.gameObject.parent = null;
             this.onMovingPlatform = false;
-            console.log("OUT");
         }
     }
 }

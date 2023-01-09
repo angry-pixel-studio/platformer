@@ -5,7 +5,7 @@ import {
     RigidBody,
     RigidBodyType,
     TiledTilemapRenderer,
-    Tileset,
+    TiledTilemapRendererOptions,
     Vector2,
 } from "angry-pixel";
 import TilemapData from "../../Tilemap/Tilemap02.json";
@@ -15,17 +15,18 @@ export class Hills extends GameObject {
         this.layer = "Hills";
 
         this.addComponent(TiledTilemapRenderer, {
-            tileset: new Tileset({
+            tileset: {
                 image: AssetManager.getImage("image/tileset/brinstar-tiles.png"),
                 tileWidth: 16,
                 tileHeight: 16,
-                gridWidth: 64,
-                gridHeight: 45,
-            }),
-            tilemapData: TilemapData,
-            layerName: "Hills",
-            tilesetIndex: 1,
-        });
+                width: 64,
+                height: 45,
+            },
+            tiledData: TilemapData,
+            tilemapLayer: "Hills",
+            tileWidth: 16,
+            tileHeight: 16,
+        } as TiledTilemapRendererOptions);
 
         this.addComponent(EdgeCollider, {
             vertexModel: [

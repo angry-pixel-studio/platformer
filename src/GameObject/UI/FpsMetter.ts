@@ -7,6 +7,7 @@ import {
     Component,
     Vector2,
     PreRenderComponent,
+    TextOrientation,
 } from "angry-pixel";
 
 const FPS_REFRESH_DELAY = 0.1;
@@ -38,9 +39,8 @@ class PhysicsFpsMetter extends PhysicsComponent {
             text: "",
             color: "#A7D6ED",
             fontSize: 14,
-            fontFamily: "PressStart2P-Regular",
-            fontUrl: "font/PressStart2P-Regular.ttf",
-            orientation: "rightDown",
+            font: "PressStart2P-Regular",
+            orientation: TextOrientation.RightDown,
             offset: new Vector2(260, 0),
         });
     }
@@ -71,9 +71,9 @@ class GameFpsMetter extends Component {
             text: "",
             color: "#A7D6ED",
             fontSize: 14,
-            fontFamily: "PressStart2P-Regular",
-            fontUrl: "font/PressStart2P-Regular.ttf",
-            orientation: "rightDown",
+            font: "PressStart2P-Regular",
+            orientation: TextOrientation.RightDown,
+            smooth: false,
         });
     }
 
@@ -103,9 +103,8 @@ class RenderFpsMetter extends PreRenderComponent {
             text: "",
             color: "#A7D6ED",
             fontSize: 14,
-            fontFamily: "PressStart2P-Regular",
-            fontUrl: "font/PressStart2P-Regular.ttf",
-            orientation: "rightDown",
+            font: "PressStart2P-Regular",
+            orientation: TextOrientation.RightDown,
             offset: new Vector2(580, 0),
         });
     }

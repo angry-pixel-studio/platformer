@@ -30,6 +30,11 @@ export class MovingPlatform extends GameObject {
 
         this.transform.scale.set(3, 3);
     }
+
+    protected start(): void {
+        // @ts-ignore
+        // console.log(this.transform.position === this.rigidBody.rigidBody.position);
+    }
 }
 
 class MovingPlatformComponent extends PhysicsComponent {
@@ -58,15 +63,21 @@ class MovingPlatformComponent extends PhysicsComponent {
             Vector2.subtract(this.direction, this.currentSpot.center, this.gameObject.transform.position)
         );
 
+        // @ts-ignore
+        // console.log(this.gameObject.transform.position, this.gameObject.rigidBody.rigidBody.position);
+
         Vector2.add(
             this.gameObject.transform.position,
             this.gameObject.transform.position,
             Vector2.scale(this.velocity, this.direction, this.moveSpeed * TimeManager.physicsDeltaTime)
         );
 
+        // @ts-ignore
+        // console.log(this.gameObject.transform.position, this.gameObject.rigidBody.rigidBody.position);
+
         this.center.position = this.gameObject.transform.position;
 
-        if (this.center.overlappingRectangle(this.currentSpot)) {
+        if (this.center.overlaps(this.currentSpot)) {
             this.gameObject.transform.position = this.currentSpot.center;
             this.currentSpotIndex = (this.currentSpotIndex + 1) % this.spots.length;
             this.currentSpot = this.spots[this.currentSpotIndex];

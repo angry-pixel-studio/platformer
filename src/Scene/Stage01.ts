@@ -7,6 +7,7 @@ import {
     InputManager,
     GameObject,
     randomInt,
+    SpacePointer,
 } from "angry-pixel";
 import { Foreground } from "../GameObject/Foreground";
 import { Player } from "../GameObject/Player";
@@ -18,7 +19,6 @@ import { WoodenPlate } from "../GameObject/Scene/WoodenPlate";
 import { Parallax } from "../GameObject/Scene/Parallax";
 import Pause from "../GameObject/UI/Pause";
 import { MovingPlatform } from "../GameObject/Scene/MovingPlatform";
-import SpotPointer from "../GameObject/SpotPointer";
 import Information from "../GameObject/UI/Information";
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -34,16 +34,12 @@ export class Stage01 extends Scene {
     private pauseText: GameObject;
     public paused: boolean = false;
 
-    init(): void {
-        AssetManager.loadImage("image/tileset/tileset.png");
-        AssetManager.loadImage("image/tileset/brinstar-tiles.png");
-        AssetManager.loadImage("image/player/player-spritesheet.png");
-        AssetManager.loadImage("image/enemy/goblin_spritesheet.png");
-        AssetManager.loadImage("image/misc/wooden_plate.png");
-        AssetManager.loadImage("image/scene/background.png");
+    private player: Player;
+    private enemies: Enemy01[] = [];
 
+    init(): void {
         this.addGameObject(InputController);
-        this.addGameObject(SpotPointer);
+        this.addGameObject(SpacePointer);
         this.addGameObject(Foreground);
 
         this.addGameObject(WoodenPlate);
@@ -58,14 +54,17 @@ export class Stage01 extends Scene {
 
         this.addGameObject(Parallax);
 
-        this.addGameObject(Player).transform.position.set(randomInt(240, 2720), -600);
+        this.player = this.addGameObject(Player);
+        this.player.transform.position.set(randomInt(240, 2720), -600);
 
         // @ts-ignore
         for (let i = 1; i <= Number(params.enemies ?? 10); i++) {
-            this.addGameObject(Enemy01, {
-                position: new Vector2(randomInt(240, 2720), -400),
-                walkSpeed: (randomInt(160, 340) / 100) * 60,
-            });
+            this.enemies.push(
+                this.addGameObject(Enemy01, {
+                    position: new Vector2(randomInt(240, 2720), -400),
+                    walkSpeed: (randomInt(160, 340) / 100) * 60,
+                })
+            );
         }
 
         this.pauseText = this.addGameObject(Pause);
@@ -91,16 +90,25 @@ export class Stage01 extends Scene {
     update(): void {
         this.pause();
 
+        const distance = new Vector2();
+
+        /*this.enemies.forEach(
+            (enemy) =>
+                (enemy.active =
+                    Vector2.subtract(distance, this.player.transform.position, enemy.transform.position).magnitude <
+                    800)
+        );*/
+
         // this.cameraFX();
     }
 
     private cameraFX(): void {
         if (this.gameCamera.zoom < 1) {
-            this.gameCamera.zoom += 0.01;
+            this.gameCamera.zoom += 0.1 * TimeManager.deltaTime;
         }
 
         if (this.fxCamera.zoom < 0.6) {
-            this.fxCamera.zoom += 0.01;
+            this.fxCamera.zoom += 0.1 * TimeManager.deltaTime;
         }
     }
 

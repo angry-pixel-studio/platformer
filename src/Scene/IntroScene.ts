@@ -17,9 +17,7 @@ class IntroText extends GameObject {
     private timer: number = 0;
     private char: number = 0;
 
-    constructor() {
-        super();
-
+    protected init(): void {
         this.layer = "Text";
 
         this.textRenderer = this.addComponent(TextRenderer, {
