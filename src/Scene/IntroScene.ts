@@ -1,7 +1,7 @@
-import { clamp, GameObject, Scene, SceneManager, TextRenderer, TimeManager } from "angry-pixel";
+import { clamp, GameObject, Scene, SceneManager, TextOrientation, TextRenderer, TimeManager } from "angry-pixel";
 
 export class Intro extends Scene {
-    protected start(): void {
+    protected init(): void {
         this.gameCamera.layers = ["Text"];
 
         this.addGameObject(IntroText);
@@ -25,10 +25,10 @@ class IntroText extends GameObject {
             height: 32,
             color: "#FFFFFF",
             text: "",
-            fontFamily: "PressStart2P-Regular",
-            fontUrl: "font/PressStart2P-Regular.ttf",
+            font: "PressStart2P-Regular",
             fontSize: 16,
-            orientation: "rightDown",
+            orientation: TextOrientation.RightDown,
+            opacity: 1,
         });
 
         this.transform.position.set(-152, 0);

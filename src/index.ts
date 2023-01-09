@@ -39,8 +39,8 @@ const config: GameConfig = {
 const game = new Game(config);
 
 // Add a scene
-// game.addScene("Intro", () => new Intro());
 game.addScene(Loading, "Loading");
+game.addScene(Intro, "Intro");
 game.addScene(Stage01, "Stage01");
 
 // Run the game

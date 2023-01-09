@@ -12,7 +12,8 @@ export class Loading extends Scene {
 
     protected update(): void {
         if (AssetManager.getAssetsLoaded()) {
-            SceneManager.loadScene("Stage01");
+            SceneManager.loadScene("Intro");
+            // SceneManager.loadScene("Stage01");
         }
     }
 }
