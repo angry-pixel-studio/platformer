@@ -12,7 +12,8 @@ import {
     SpriteRenderer,
     Vector2,
 } from "angry-pixel";
-import { Enemy01Walking } from "../../Animation/Enemy01Animations";
+import { Enemy01Walking } from "../../animation/Enemy01Animations";
+import { LAYERS } from "../../config/layers";
 
 export interface EnemyOptions extends InitOptions {
     position: Vector2;
@@ -38,7 +39,7 @@ export class Enemy01 extends GameObject {
     private playerCollision: boolean = false;
 
     protected init({ position, walkSpeed }: EnemyOptions): void {
-        this.layer = "Enemy";
+        this.layer = LAYERS.Goblin;
 
         this.spriteRenderer = this.addComponent<SpriteRenderer>(SpriteRenderer, {
             sprite: new Sprite({
@@ -97,7 +98,6 @@ export class Enemy01 extends GameObject {
         }
 
         if (this.playerCollision && this.jumping === false) {
-            // console.log(this.edgeCollider.colliders[0], this.edgeCollider.getCollisionWithLayer("Player").collider);
             this.jumping = true;
             yVelocity = this.jumpSpeed;
         }

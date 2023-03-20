@@ -1,5 +1,4 @@
 import { GameObject, GamepadData, InputManager, KeyboardController, Vector2 } from "angry-pixel";
-import { Stage01 } from "../Scene/Stage01";
 
 export class InputController extends GameObject {
     private keyboard: KeyboardController;

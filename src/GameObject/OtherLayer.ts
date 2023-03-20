@@ -5,11 +5,12 @@ import {
     TiledTilemapRendererOptions,
     TilemapOrientation,
 } from "angry-pixel";
-import TilemapData from "../Tilemap/Tilemap02.json";
+import { LAYERS } from "../config/layers";
+import TilemapData from "../tilemap/Tilemap02.json";
 
 export class OtherLayer extends GameObject {
     protected init(): void {
-        this.layer = "Overlayer";
+        this.layer = LAYERS.Overlayer;
 
         this.addComponent(TiledTilemapRenderer, {
             tileset: {

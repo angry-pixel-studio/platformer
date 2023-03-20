@@ -1,6 +1,6 @@
 import { clamp, GameCamera, PreRenderComponent, TiledTilemapRenderer, Vector2 } from "angry-pixel";
-import { Foreground } from "../../GameObject/Foreground";
-import { Player } from "../../GameObject/Player";
+import { Foreground } from "../../gameObject/Foreground";
+import { Player } from "../../gameObject/Player";
 
 const maxOffset = 80;
 
@@ -18,7 +18,7 @@ export class FollowPlayerCamera extends PreRenderComponent {
     private playerOffset: Vector2 = new Vector2();
     private cachePosition: Vector2 = new Vector2();
 
-    start(): void {
+    protected start(): void {
         this.player = this.findGameObject<Player>(Player);
         this.camera = this.gameObject as GameCamera;
 
@@ -34,7 +34,7 @@ export class FollowPlayerCamera extends PreRenderComponent {
         this.gameObject.transform.position.copy(this.player.transform.position);
     }
 
-    update(): void {
+    protected update(): void {
         this.followPlayer();
         this.clampToBoundaries();
     }

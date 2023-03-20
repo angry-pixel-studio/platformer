@@ -10,10 +10,11 @@ import {
     SpriteRenderer,
     Vector2,
 } from "angry-pixel";
-import * as Animations from "../Animation/PlayerAnimation";
-import { AnimationController } from "../Component/Player/AnimationController";
-import { Movements } from "../Component/Player/Movements";
-import { Stage01 } from "../Scene/Stage01";
+import * as Animations from "../animation/PlayerAnimation";
+import { AnimationController } from "../component/player/AnimationController";
+import { Movements } from "../component/player/Movements";
+import { LAYERS } from "../config/layers";
+import { GameScene } from "../scene/GameScene";
 
 export class Player extends GameObject {
     private spriteRenderer: SpriteRenderer;
@@ -23,7 +24,7 @@ export class Player extends GameObject {
     public grounded: boolean = false;
 
     protected init(): void {
-        this.layer = "Player";
+        this.layer = LAYERS.Player;
 
         this.spriteRenderer = this.addComponent<SpriteRenderer>(SpriteRenderer, {
             sprite: new Sprite({
@@ -64,12 +65,11 @@ export class Player extends GameObject {
 
     protected start(): void {
         this.transform.scale.set(3, 3);
-        //this.transform.position.set(0, -48);
         this.animator.playAnimation("PlayerIdle");
     }
 
     protected update(): void {
-        this.spriteRenderer.active = !this.getCurrentScene<Stage01>().paused;
+        this.spriteRenderer.active = !this.getCurrentScene<GameScene>().paused;
 
         this.grounded = this.movements.grounded;
     }

@@ -9,14 +9,15 @@ import {
     TilemapOrientation,
     Vector2,
 } from "angry-pixel";
-import TilemapData from "../Tilemap/Tilemap02.json";
+import { LAYERS } from "../config/layers";
+import TilemapData from "../tilemap/Tilemap02.json";
 import { OtherLayer } from "./OtherLayer";
 
 export class Foreground extends GameObject {
     private tilemapRenderer: TiledTilemapRenderer;
 
     protected init(): void {
-        this.layer = "Foreground";
+        this.layer = LAYERS.Foreground;
 
         this.transform.scale.set(3, 3);
 

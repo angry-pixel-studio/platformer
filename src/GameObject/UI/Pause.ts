@@ -1,8 +1,9 @@
 import { GameObject, TextOrientation, TextRenderer, TextRendererOptions } from "angry-pixel";
+import { LAYERS } from "../../config/layers";
 
 export default class Pause extends GameObject {
     protected init(): void {
-        this.layer = "UI";
+        this.layer = LAYERS.UI;
         this.ui = true;
 
         this.addComponent(TextRenderer, {
@@ -15,7 +16,7 @@ export default class Pause extends GameObject {
         } as TextRendererOptions);
     }
 
-    start() {
+    protected start(): void {
         this.transform.position.set(0, 0);
     }
 }

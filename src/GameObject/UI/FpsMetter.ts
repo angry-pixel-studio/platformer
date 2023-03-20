@@ -9,12 +9,13 @@ import {
     PreRenderComponent,
     TextOrientation,
 } from "angry-pixel";
+import { LAYERS } from "../../config/layers";
 
 const FPS_REFRESH_DELAY = 0.1;
 
 export default class FpsMetter extends GameObject {
     protected init(): void {
-        this.layer = "UI";
+        this.layer = LAYERS.UI;
         this.ui = true;
 
         this.addComponent(GameFpsMetter);
@@ -22,7 +23,7 @@ export default class FpsMetter extends GameObject {
         this.addComponent(RenderFpsMetter);
     }
 
-    start() {
+    protected start(): void {
         this.transform.position.set(20 - DomManager.gameWidth / 2, 40 - DomManager.gameHeight / 2);
     }
 }
@@ -45,7 +46,7 @@ class PhysicsFpsMetter extends PhysicsComponent {
         });
     }
 
-    update() {
+    protected update(): void {
         this.timer += TimeManager.physicsDeltaTime;
         this.counter++;
 
@@ -77,7 +78,7 @@ class GameFpsMetter extends Component {
         });
     }
 
-    update() {
+    protected update(): void {
         this.timer += TimeManager.unscaledDeltaTime;
         this.counter++;
 
@@ -109,7 +110,7 @@ class RenderFpsMetter extends PreRenderComponent {
         });
     }
 
-    update() {
+    protected update(): void {
         this.timer += TimeManager.browserDeltaTime;
         this.counter++;
 

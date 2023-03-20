@@ -1,5 +1,5 @@
 import { BoxCollider, Component, RigidBody, Vector2, CollisionData } from "angry-pixel";
-import { InputController } from "../../GameObject/InputController";
+import { InputController } from "../../gameObject/InputController";
 
 export class Movements extends Component {
     // cache
@@ -22,11 +22,14 @@ export class Movements extends Component {
     private hillsCollision: CollisionData = null;
     private onMovingPlatform: boolean = false;
 
-    protected start(): void {
+    protected init(): void {
         this.bodyCollider = this.getComponent("BodyCollider");
         this.feetCollider = this.getComponent("FeetCollider");
         this.headCollider = this.getComponent("HeadCollider");
         this.rigidBody = this.getComponent(RigidBody);
+    }
+
+    protected start(): void {
         this.inputController = this.findGameObject(InputController);
 
         this.rigidBody.gravity = this.gravity;

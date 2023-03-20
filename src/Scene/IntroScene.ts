@@ -1,8 +1,9 @@
 import { clamp, GameObject, Scene, SceneManager, TextOrientation, TextRenderer, TimeManager } from "angry-pixel";
+import { LAYERS } from "../config/layers";
 
 export class Intro extends Scene {
     protected init(): void {
-        this.gameCamera.layers = ["Text"];
+        this.gameCamera.layers = [LAYERS.Text];
 
         this.addGameObject(IntroText);
     }
@@ -18,7 +19,7 @@ class IntroText extends GameObject {
     private char: number = 0;
 
     protected init(): void {
-        this.layer = "Text";
+        this.layer = LAYERS.Text;
 
         this.textRenderer = this.addComponent(TextRenderer, {
             width: 304,
@@ -63,7 +64,7 @@ class IntroText extends GameObject {
 
     private changeScene(): void {
         if (this.timer >= exitDelay) {
-            SceneManager.loadScene("Stage01");
+            SceneManager.loadScene("GameScene");
         }
     }
 }

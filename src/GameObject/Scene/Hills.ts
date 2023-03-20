@@ -8,11 +8,12 @@ import {
     TiledTilemapRendererOptions,
     Vector2,
 } from "angry-pixel";
-import TilemapData from "../../Tilemap/Tilemap02.json";
+import { LAYERS } from "../../config/layers";
+import TilemapData from "../../tilemap/Tilemap02.json";
 
 export class Hills extends GameObject {
     protected init(): void {
-        this.layer = "Hills";
+        this.layer = LAYERS.Hills;
 
         this.addComponent(TiledTilemapRenderer, {
             tileset: {

@@ -11,10 +11,11 @@ import {
     TimeManager,
     Vector2,
 } from "angry-pixel";
+import { LAYERS } from "../../config/layers";
 
 export class MovingPlatform extends GameObject {
     protected init({ spots }: { spots: Vector2[] }): void {
-        this.layer = "Platform";
+        this.layer = LAYERS.Platform;
 
         this.addComponent(SpriteRenderer, {
             sprite: new Sprite({
@@ -29,11 +30,6 @@ export class MovingPlatform extends GameObject {
         this.addComponent(MovingPlatformComponent, { spots });
 
         this.transform.scale.set(3, 3);
-    }
-
-    protected start(): void {
-        // @ts-ignore
-        // console.log(this.transform.position === this.rigidBody.rigidBody.position);
     }
 }
 
@@ -63,17 +59,11 @@ class MovingPlatformComponent extends PhysicsComponent {
             Vector2.subtract(this.direction, this.currentSpot.center, this.gameObject.transform.position)
         );
 
-        // @ts-ignore
-        // console.log(this.gameObject.transform.position, this.gameObject.rigidBody.rigidBody.position);
-
         Vector2.add(
             this.gameObject.transform.position,
             this.gameObject.transform.position,
             Vector2.scale(this.velocity, this.direction, this.moveSpeed * TimeManager.physicsDeltaTime)
         );
-
-        // @ts-ignore
-        // console.log(this.gameObject.transform.position, this.gameObject.rigidBody.rigidBody.position);
 
         this.center.position = this.gameObject.transform.position;
 

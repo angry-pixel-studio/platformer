@@ -12,7 +12,7 @@ export class AnimationController extends Component {
         this.movements = this.getComponent(Movements);
     }
 
-    update(): void {
+    protected update(): void {
         this.gameObject.transform.scale.x =
             this.rigidBody.velocity.x !== 0
                 ? Math.sign(this.rigidBody.velocity.x) * Math.abs(this.gameObject.transform.scale.x)

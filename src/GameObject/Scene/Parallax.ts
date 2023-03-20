@@ -1,8 +1,9 @@
-import { AssetManager, BoxCollider, GameObject, Sprite, SpriteRenderer, Vector2 } from "angry-pixel";
+import { AssetManager, GameObject, Sprite, SpriteRenderer, Vector2 } from "angry-pixel";
+import { LAYERS } from "../../config/layers";
 
 export class Parallax extends GameObject {
     protected init(): void {
-        this.layer = "Parallax";
+        this.layer = LAYERS.Parallax;
 
         this.addComponent(SpriteRenderer, {
             sprite: new Sprite({

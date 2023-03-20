@@ -1,7 +1,8 @@
-import { Game, Rectangle, CollisionMethods, GameConfig, Vector2, BroadPhaseMethods } from "angry-pixel";
-import { Stage01 } from "./Scene/Stage01";
-import { Intro } from "./Scene/IntroScene";
-import { Loading } from "./Scene/Loading";
+import { CollisionMatrix, Game, GameConfig } from "angry-pixel";
+import { PARAMETERS } from "./config/parameters";
+import { GameScene } from "./scene/GameScene";
+import { Intro } from "./scene/IntroScene";
+import { Loading } from "./scene/Loading";
 
 const containerElement = document.getElementById("app");
 
@@ -12,28 +13,10 @@ const config: GameConfig = {
     gameHeight: 720,
     debugEnabled: false,
     canvasColor: "#000000",
-    // physicsFramerate: 60,
     collisions: {
-        collisionMethod: CollisionMethods.SAT,
-        collisionMatrix: [
-            ["Player", "Foreground"],
-            ["Player", "Enemy"],
-            ["Player", "Platform"],
-            ["Player", "Hills"],
-            ["Enemy", "Foreground"],
-            ["Enemy", "Player"],
-            ["Enemy", "Platform"],
-            ["Enemy", "Hills"],
-        ],
+        collisionMatrix: PARAMETERS.collisionMatrix as CollisionMatrix,
     },
 };
-
-// min config
-/*const config: GameConfig = {
-    containerNode: containerElement,
-    gameWidth: 1280,
-    gameHeight: 720,
-};*/
 
 // Create the Game
 const game = new Game(config);
@@ -41,7 +24,7 @@ const game = new Game(config);
 // Add a scene
 game.addScene(Loading, "Loading");
 game.addScene(Intro, "Intro");
-game.addScene(Stage01, "Stage01");
+game.addScene(GameScene, "GameScene");
 
 // Run the game
 game.run();
