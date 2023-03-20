@@ -3,7 +3,7 @@ import { Foreground } from "../gameObject/Foreground";
 import { Player } from "../gameObject/Player";
 import { InputController } from "../gameObject/InputController";
 import { FollowPlayerCamera } from "../component/camera/FollowPlayerCamera";
-import { Enemy01 } from "../gameObject/enemy/Enemy01";
+import { Goblin } from "../gameObject/Goblin";
 import FpsMetter from "../gameObject/ui/FpsMetter";
 import { WoodenPlate } from "../gameObject/scene/WoodenPlate";
 import { Parallax } from "../gameObject/scene/Parallax";
@@ -26,7 +26,7 @@ export class GameScene extends Scene {
     public paused: boolean = false;
 
     private player: Player;
-    private enemies: Enemy01[] = [];
+    private enemies: Goblin[] = [];
 
     init(): void {
         this.addGameObject(InputController);
@@ -51,7 +51,7 @@ export class GameScene extends Scene {
         // @ts-ignore
         for (let i = 1; i <= Number(params.enemies ?? 10); i++) {
             this.enemies.push(
-                this.addGameObject(Enemy01, {
+                this.addGameObject(Goblin, {
                     position: new Vector2(randomInt(240, 2720), -400),
                     walkSpeed: (randomInt(160, 340) / 100) * 60,
                 })
