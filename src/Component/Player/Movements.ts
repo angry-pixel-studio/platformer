@@ -1,4 +1,5 @@
 import { BoxCollider, Component, RigidBody, Vector2, CollisionData } from "angry-pixel";
+import { LAYERS } from "../../config/layers";
 import { InputController } from "../../gameObject/InputController";
 
 export class Movements extends Component {
@@ -38,20 +39,20 @@ export class Movements extends Component {
     }
 
     protected update(): void {
-        this.platformCollision = this.feetCollider.getCollisionWithLayer("Platform");
+        this.platformCollision = this.feetCollider.getCollisionWithLayer(LAYERS.Platform);
         this.grounded =
-            this.feetCollider.collidesWithLayer("Foreground") ||
-            this.feetCollider.collidesWithLayer("Hills") ||
-            this.feetCollider.collidesWithLayer("Enemy") ||
+            this.feetCollider.collidesWithLayer(LAYERS.Foreground) ||
+            this.feetCollider.collidesWithLayer(LAYERS.Hills) ||
+            this.feetCollider.collidesWithLayer(LAYERS.Goblin) ||
             this.platformCollision !== null;
 
-        this.hillsCollision = this.bodyCollider.getCollisionWithLayer("Hills");
+        this.hillsCollision = this.bodyCollider.getCollisionWithLayer(LAYERS.Hills);
 
         this.checkForMovingPlatform();
         this.walk();
         this.jump();
 
-        if (this.headCollider.collidesWithLayer("Foreground")) return;
+        if (this.headCollider.collidesWithLayer(LAYERS.Foreground)) return;
 
         this.bodyCollider.height = this.inputController.axis.y < 0 ? 8 : 16;
         this.bodyCollider.offsetY = this.inputController.axis.y < 0 ? -4 : 0;

@@ -84,11 +84,11 @@ export class Goblin extends GameObject {
     }
 
     private move(): void {
-        this.bodyCollisions = this.bodyCollider.getCollisionsWithLayer("Foreground");
+        this.bodyCollisions = this.bodyCollider.getCollisionsWithLayer(LAYERS.Foreground);
         this.bodyCollision = this.bodyCollisions.length > 0;
 
-        this.edgeCollision = this.edgeCollider.collidesWithLayer("Foreground");
-        this.playerCollision = this.edgeCollider.collidesWithLayer("Player");
+        this.edgeCollision = this.edgeCollider.collidesWithLayer(LAYERS.Foreground);
+        this.playerCollision = this.edgeCollider.collidesWithLayer(LAYERS.Player);
         this.wallCollision = this.bodyCollision && this.bodyCollisions.some((c) => c.resolution.direction.x !== 0);
 
         let yVelocity: number = this.bodyCollision ? 0 : this.rigidBody.velocity.y;
