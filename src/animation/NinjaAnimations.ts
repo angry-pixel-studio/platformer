@@ -1,4 +1,4 @@
-import { Sprite, Animation, Vector2, IAssetManager, Rectangle } from "angry-pixel";
+import { Sprite, Animation, IAssetManager, Rectangle } from "angry-pixel";
 
 export const NinjaIdle = (assetManager: IAssetManager): Animation => {
     return new Animation({

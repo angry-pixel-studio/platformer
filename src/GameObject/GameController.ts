@@ -6,7 +6,7 @@ import { Goblin } from "./Goblin";
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop.toString()),
-}) as { [key: string]: any };
+});
 
 export class GameController extends GameObject {
     private inputController: InputController;
@@ -23,6 +23,7 @@ export class GameController extends GameObject {
         this.player = this.addGameObject(Player);
         this.player.transform.position.set(randomInt(240, 2720), -600);
 
+        // @ts-ignore
         const goblinQuantity = Number(params.goblins ?? 10);
 
         for (let i = 1; i <= goblinQuantity; i++) {
