@@ -1,10 +1,10 @@
-import { DomManager, GameObject, TextOrientation, TextRenderer, TextRendererOptions } from "angry-pixel";
+import { GameObject, TextOrientation, TextRenderer, TextRendererOptions, Vector2 } from "angry-pixel";
 import { LAYERS } from "../../config/layers";
 
 const text = "Use Arrows to move and Space to jump";
 const fontSize = 14;
 
-export default class Information extends GameObject {
+export class Information extends GameObject {
     protected init(): void {
         this.layer = LAYERS.UI;
         this.ui = true;
@@ -16,10 +16,9 @@ export default class Information extends GameObject {
             fontSize,
             font: "PressStart2P-Regular",
             orientation: TextOrientation.RightDown,
+            bitmapSpacing: new Vector2(-1, -2),
         } as TextRendererOptions);
-    }
 
-    protected start(): void {
-        this.transform.position.set(20 - DomManager.gameWidth / 2, 70 - DomManager.gameHeight / 2);
+        this.transform.position.set(20 - this.domManager.canvas.width / 2, 70 - this.domManager.canvas.height / 2);
     }
 }

@@ -9,5 +9,6 @@ export const ASSETS = {
         woodenPlate: "image/misc/wooden_plate.png",
         background: "image/scene/background.png",
     },
+    video: {},
     audio: {},
 };

@@ -1,6 +1,5 @@
 import {
     Animator,
-    AssetManager,
     BoxCollider,
     GameObject,
     Rectangle,
@@ -10,11 +9,10 @@ import {
     SpriteRenderer,
     Vector2,
 } from "angry-pixel";
-import * as Animations from "../animation/PlayerAnimation";
+import * as Animations from "../animation/NinjaAnimations";
 import { AnimationController } from "../component/player/AnimationController";
 import { Movements } from "../component/player/Movements";
 import { LAYERS } from "../config/layers";
-import { GameScene } from "../scene/GameScene";
 
 export class Player extends GameObject {
     private spriteRenderer: SpriteRenderer;
@@ -28,7 +26,7 @@ export class Player extends GameObject {
 
         this.spriteRenderer = this.addComponent<SpriteRenderer>(SpriteRenderer, {
             sprite: new Sprite({
-                image: AssetManager.getImage("image/player/player-spritesheet.png"),
+                image: this.assetManager.getImage("image/player/player-spritesheet.png"),
                 slice: new Rectangle(0, 64, 16, 16),
                 smooth: false,
             }),
@@ -38,8 +36,8 @@ export class Player extends GameObject {
         this.animator = this.addComponent<Animator>(Animator, {
             spriteRenderer: this.spriteRenderer,
         })
-            .addAnimation(Animations.PlayerIdle(), "PlayerIdle")
-            .addAnimation(Animations.PlayerRun(), "PlayerRun");
+            .addAnimation(Animations.NinjaIdle(this.assetManager), "PlayerIdle")
+            .addAnimation(Animations.NinjaRun(this.assetManager), "PlayerRun");
 
         this.addComponent(BoxCollider, { width: 8, height: 16, physics: true, debug: true }, "BodyCollider");
 
@@ -69,8 +67,6 @@ export class Player extends GameObject {
     }
 
     protected update(): void {
-        this.spriteRenderer.active = !this.getCurrentScene<GameScene>().paused;
-
         this.grounded = this.movements.grounded;
     }
 }

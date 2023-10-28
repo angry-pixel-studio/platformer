@@ -1,6 +1,5 @@
 import {
     Animator,
-    AssetManager,
     BoxCollider,
     CollisionData,
     GameObject,
@@ -12,10 +11,10 @@ import {
     SpriteRenderer,
     Vector2,
 } from "angry-pixel";
-import { Enemy01Walking } from "../animation/Enemy01Animations";
+import { GoblinWalking } from "../animation/GoblinAnimations";
 import { LAYERS } from "../config/layers";
 
-export interface EnemyOptions extends InitOptions {
+export interface GoblinOptions extends InitOptions {
     position: Vector2;
     walkSpeed: number;
 }
@@ -38,12 +37,12 @@ export class Goblin extends GameObject {
     private wallCollision: boolean = false;
     private playerCollision: boolean = false;
 
-    protected init({ position, walkSpeed }: EnemyOptions): void {
+    protected init({ position, walkSpeed }: GoblinOptions): void {
         this.layer = LAYERS.Goblin;
 
         this.spriteRenderer = this.addComponent<SpriteRenderer>(SpriteRenderer, {
             sprite: new Sprite({
-                image: AssetManager.getImage("image/enemy/goblin_spritesheet.png"),
+                image: this.assetManager.getImage("image/enemy/goblin_spritesheet.png"),
                 slice: new Rectangle(0, 0, 16, 16),
                 smooth: false,
             }),
@@ -51,7 +50,7 @@ export class Goblin extends GameObject {
 
         this.animator = this.addComponent<Animator>(Animator, {
             spriteRenderer: this.spriteRenderer,
-        }).addAnimation(Enemy01Walking(), "Walking");
+        }).addAnimation(GoblinWalking(this.assetManager), "Walking");
 
         this.bodyCollider = this.addComponent(
             BoxCollider,

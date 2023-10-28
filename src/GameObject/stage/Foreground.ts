@@ -1,5 +1,4 @@
 import {
-    AssetManager,
     GameObject,
     RigidBody,
     RigidBodyType,
@@ -9,8 +8,8 @@ import {
     TilemapOrientation,
     Vector2,
 } from "angry-pixel";
-import { LAYERS } from "../config/layers";
-import TilemapData from "../tilemap/Tilemap02.json";
+import { LAYERS } from "../../config/layers";
+import TilemapData from "../../tilemap/Tilemap.json";
 import { OtherLayer } from "./OtherLayer";
 
 export class Foreground extends GameObject {
@@ -23,7 +22,7 @@ export class Foreground extends GameObject {
 
         this.tilemapRenderer = this.addComponent(TiledTilemapRenderer, {
             tileset: {
-                image: AssetManager.getImage("image/tileset/tileset.png"),
+                image: this.assetManager.getImage("image/tileset/tileset.png"),
                 tileWidth: 16,
                 tileHeight: 16,
                 width: 12,
@@ -39,7 +38,7 @@ export class Foreground extends GameObject {
         this.addComponent<TilemapCollider>(TilemapCollider, {
             tilemapRenderer: this.tilemapRenderer,
             debug: true,
-            composite: true,
+            composite: false,
         });
 
         this.addComponent<RigidBody>(RigidBody, {

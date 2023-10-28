@@ -21,9 +21,7 @@ module.exports = {
         filename: "bundle.js",
     },
     devServer: {
-        static: {
-            directory: path.join(__dirname, "dist"),
-        },
+        contentBase: "./dist",
         compress: false,
         port: 8080,
     },

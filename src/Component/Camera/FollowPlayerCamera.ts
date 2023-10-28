@@ -1,5 +1,5 @@
 import { clamp, GameCamera, PreRenderComponent, TiledTilemapRenderer, Vector2 } from "angry-pixel";
-import { Foreground } from "../../gameObject/Foreground";
+import { Foreground } from "../../gameObject/stage/Foreground";
 import { Player } from "../../gameObject/Player";
 
 const maxOffset = 80;

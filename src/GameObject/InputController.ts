@@ -1,4 +1,4 @@
-import { GameObject, GamepadData, InputManager, KeyboardController, Vector2 } from "angry-pixel";
+import { GameObject, GamepadData, KeyboardController, Vector2 } from "angry-pixel";
 
 export class InputController extends GameObject {
     private keyboard: KeyboardController;
@@ -9,11 +9,11 @@ export class InputController extends GameObject {
     public pause: boolean = false;
 
     protected init(): void {
-        this.keyboard = InputManager.keyboard;
+        this.keyboard = this.inputManager.keyboard;
     }
 
     protected update(): void {
-        this.gamepad = InputManager.gamepad.getGamepad(0);
+        this.gamepad = this.inputManager.gamepad.getGamepad(0);
 
         this.updateKeyboard();
         if (this.gamepad) this.updateGamepad();

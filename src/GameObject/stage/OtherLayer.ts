@@ -1,12 +1,6 @@
-import {
-    AssetManager,
-    GameObject,
-    TiledTilemapRenderer,
-    TiledTilemapRendererOptions,
-    TilemapOrientation,
-} from "angry-pixel";
-import { LAYERS } from "../config/layers";
-import TilemapData from "../tilemap/Tilemap02.json";
+import { GameObject, TiledTilemapRenderer, TiledTilemapRendererOptions, TilemapOrientation } from "angry-pixel";
+import { LAYERS } from "../../config/layers";
+import TilemapData from "../../tilemap/Tilemap.json";
 
 export class OtherLayer extends GameObject {
     protected init(): void {
@@ -14,7 +8,7 @@ export class OtherLayer extends GameObject {
 
         this.addComponent(TiledTilemapRenderer, {
             tileset: {
-                image: AssetManager.getImage("image/tileset/tileset.png"),
+                image: this.assetManager.getImage("image/tileset/tileset.png"),
                 tileWidth: 16,
                 tileHeight: 16,
                 width: 12,

@@ -1,6 +1,4 @@
 import {
-    DomManager,
-    TimeManager,
     GameObject,
     TextRenderer,
     PhysicsComponent,
@@ -13,7 +11,7 @@ import { LAYERS } from "../../config/layers";
 
 const FPS_REFRESH_DELAY = 0.1;
 
-export default class FpsMetter extends GameObject {
+export class FpsMetter extends GameObject {
     protected init(): void {
         this.layer = LAYERS.UI;
         this.ui = true;
@@ -21,10 +19,8 @@ export default class FpsMetter extends GameObject {
         this.addComponent(GameFpsMetter);
         this.addComponent(PhysicsFpsMetter);
         this.addComponent(RenderFpsMetter);
-    }
 
-    protected start(): void {
-        this.transform.position.set(20 - DomManager.gameWidth / 2, 40 - DomManager.gameHeight / 2);
+        this.transform.position.set(20 - this.domManager.canvas.width / 2, 40 - this.domManager.canvas.height / 2);
     }
 }
 
@@ -41,13 +37,14 @@ class PhysicsFpsMetter extends PhysicsComponent {
             color: "#A7D6ED",
             fontSize: 14,
             font: "PressStart2P-Regular",
+            bitmapSpacing: new Vector2(-1, -2),
             orientation: TextOrientation.RightDown,
             offset: new Vector2(260, 0),
         });
     }
 
     protected update(): void {
-        this.timer += TimeManager.physicsDeltaTime;
+        this.timer += this.timeManager.unscaledPhysicsDeltaTime;
         this.counter++;
 
         if (this.timer >= FPS_REFRESH_DELAY) {
@@ -73,13 +70,14 @@ class GameFpsMetter extends Component {
             color: "#A7D6ED",
             fontSize: 14,
             font: "PressStart2P-Regular",
+            bitmapSpacing: new Vector2(-1, -2),
             orientation: TextOrientation.RightDown,
             smooth: false,
         });
     }
 
     protected update(): void {
-        this.timer += TimeManager.unscaledDeltaTime;
+        this.timer += this.timeManager.unscaledDeltaTime;
         this.counter++;
 
         if (this.timer >= FPS_REFRESH_DELAY) {
@@ -105,13 +103,14 @@ class RenderFpsMetter extends PreRenderComponent {
             color: "#A7D6ED",
             fontSize: 14,
             font: "PressStart2P-Regular",
+            bitmapSpacing: new Vector2(-1, -2),
             orientation: TextOrientation.RightDown,
             offset: new Vector2(580, 0),
         });
     }
 
     protected update(): void {
-        this.timer += TimeManager.browserDeltaTime;
+        this.timer += this.timeManager.browserDeltaTime;
         this.counter++;
 
         if (this.timer >= FPS_REFRESH_DELAY) {

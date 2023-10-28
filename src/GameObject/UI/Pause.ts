@@ -1,7 +1,7 @@
-import { GameObject, TextOrientation, TextRenderer, TextRendererOptions } from "angry-pixel";
+import { GameObject, TextOrientation, TextRenderer, TextRendererOptions, Vector2 } from "angry-pixel";
 import { LAYERS } from "../../config/layers";
 
-export default class Pause extends GameObject {
+export class Pause extends GameObject {
     protected init(): void {
         this.layer = LAYERS.UI;
         this.ui = true;
@@ -11,12 +11,9 @@ export default class Pause extends GameObject {
             color: "#A7D6ED",
             fontSize: 20,
             font: "PressStart2P-Regular",
+            bitmapSpacing: new Vector2(-1, -2),
             orientation: TextOrientation.Center,
             width: 100,
         } as TextRendererOptions);
-    }
-
-    protected start(): void {
-        this.transform.position.set(0, 0);
     }
 }
